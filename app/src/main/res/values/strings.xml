@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">TJournal</string>
+    <string name="title_feed">Лента</string>
+    <string name="title_profile">Профиль</string>
+</resources>
