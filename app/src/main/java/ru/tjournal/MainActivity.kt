@@ -9,6 +9,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import retrofit2.Retrofit
 import ru.tjournal.BuildConfig.TJ_URL
+import ru.tjournal.data.Api
 import ru.tjournal.data.Source
 
 
@@ -40,6 +41,6 @@ class MainActivity : AppCompatActivity() {
             .baseUrl(TJ_URL)
             .build()
 
-        service = retrofit.create(Source::class.java)
+        service = Source(retrofit.create(Api::class.java))
     }
 }
