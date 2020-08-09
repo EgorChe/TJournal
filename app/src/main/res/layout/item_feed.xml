@@ -19,7 +19,7 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Заголовок" />
 
-    <ImageView
+    <com.google.android.exoplayer2.ui.PlayerView
         android:id="@+id/ivMediaContent"
         android:layout_width="0dp"
         android:layout_height="200dp"

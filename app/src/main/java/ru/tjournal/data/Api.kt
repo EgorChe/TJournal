@@ -9,10 +9,13 @@ import retrofit2.http.Path
 
 interface Api {
 
-    @GET("/subsite/{id}/timeline/{sorting}")
-    fun getFeeds(@Path("id") id: Int, @Path("sorting") sorting: String): Deferred<Response<Unit>>
+    @GET("subsite/{id}/timeline/{sorting}")
+    suspend fun getFeeds(
+        @Path("id") id: Int,
+        @Path("sorting") sorting: String
+    ): Response<FeedsResponse>
 
-    @POST("/auth/qr")
-    fun authQR(@Body request: AuthQrRequest): Deferred<Response<Unit>>
+    @POST("auth/qr")
+    suspend fun authQR(@Body request: AuthQrRequest): Response<Unit>
 
 }
