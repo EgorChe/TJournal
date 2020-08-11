@@ -9,6 +9,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.tjournal.BuildConfig.TJ_URL
@@ -72,8 +73,8 @@ class MainActivity : AppCompatActivity() {
         service = Source(retrofit.create(Api::class.java))
     }
 
-    private fun getUnsafeOkHttpClient(): OkHttpClient.Builder =
-        try {
+    private fun getUnsafeOkHttpClient(): OkHttpClient.Builder {
+        return try {
             val trustAllCerts = arrayOf(object : X509TrustManager {
                 override fun checkClientTrusted(p0: Array<out X509Certificate>?, p1: String?) {}
                 override fun checkServerTrusted(p0: Array<out X509Certificate>?, p1: String?) {}
@@ -82,14 +83,16 @@ class MainActivity : AppCompatActivity() {
 
             val sslContext: SSLContext = SSLContext.getInstance("SSL")
             sslContext.init(null, trustAllCerts, SecureRandom())
-
+            val logging = HttpLoggingInterceptor()
+            logging.setLevel(HttpLoggingInterceptor.Level.BODY)
             val builder = OkHttpClient.Builder()
                 .sslSocketFactory(sslContext.socketFactory, trustAllCerts[0] as X509TrustManager)
-                .hostnameVerifier { _, _ -> true }
+                .addInterceptor(logging)
             builder
         } catch (e: Exception) {
             throw RuntimeException(e)
         }
+    }
 
     private fun getLocale(): String =
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {

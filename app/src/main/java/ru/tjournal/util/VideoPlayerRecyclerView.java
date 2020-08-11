@@ -381,9 +381,6 @@ public class VideoPlayerRecyclerView extends RecyclerView {
         }
     }
 
-    public boolean isLastPosition() {
-        return playPosition == mediaObjects.size();
-    }
 
     public void releasePlayer() {
 

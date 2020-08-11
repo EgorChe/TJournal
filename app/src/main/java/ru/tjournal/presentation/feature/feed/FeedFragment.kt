@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
 import com.bumptech.glide.request.RequestOptions
 import ru.tjournal.MainActivity
+import ru.tjournal.data.Source
 import ru.tjournal.databinding.FragmentFeedBinding
 import ru.tjournal.presentation.feature.feed.adapter.VideoPlayerRecyclerAdapter
 import ru.tjournal.presentation.feature.feed.model.MediaObject
@@ -24,6 +25,7 @@ class FeedFragment : Fragment() {
     private lateinit var binding: FragmentFeedBinding
 
     private lateinit var videoAdapter: VideoPlayerRecyclerAdapter
+    private var page = Source.OFFSET
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,7 +48,13 @@ class FeedFragment : Fragment() {
             addItemDecoration(VerticalSpacingItemDecorator(10))
 //            setMediaObjects()
             videoAdapter =
-                VideoPlayerRecyclerAdapter(arrayListOf(), initGlide())
+                VideoPlayerRecyclerAdapter(
+                    linkedSetOf(),
+                    initGlide(),
+                    onScrollToBottomListener = {
+                        fetchData()
+                    }
+                )
             adapter = videoAdapter
         }
 
@@ -62,9 +70,13 @@ class FeedFragment : Fragment() {
     }
 
     private fun fetchData() {
-        feedViewModel.getFeeds().observe(viewLifecycleOwner, Observer { list ->
-            binding.rvFeeds.setMediaObjects(list as ArrayList<MediaObject>, requireContext())
-            videoAdapter.setData(list)
+        feedViewModel.getFeeds(page).observe(viewLifecycleOwner, Observer { set ->
+            binding.rvFeeds.setMediaObjects(
+                set.toList() as ArrayList<MediaObject>,
+                requireContext()
+            )
+            videoAdapter.setData(set as LinkedHashSet<MediaObject>)
+            page++
         })
     }
 

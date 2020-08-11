@@ -10,11 +10,12 @@ import ru.tjournal.util.VideoPlayerViewHolder
 import java.util.*
 
 class VideoPlayerRecyclerAdapter(
-    private var mediaObjects: ArrayList<MediaObject>,
-    private val requestManager: RequestManager
+    private var mediaObjects: LinkedHashSet<MediaObject>,
+    private val requestManager: RequestManager,
+    private val onScrollToBottomListener: () -> Unit
 ) : RecyclerView.Adapter<VideoPlayerViewHolder>() {
 
-    fun setData(data: ArrayList<MediaObject>) {
+    fun setData(data: LinkedHashSet<MediaObject>) {
         this.mediaObjects = data
         notifyDataSetChanged()
     }
@@ -27,7 +28,10 @@ class VideoPlayerRecyclerAdapter(
     }
 
     override fun onBindViewHolder(holder: VideoPlayerViewHolder, position: Int) {
-        holder.onBind(mediaObjects[position], requestManager)
+        holder.onBind(mediaObjects.elementAt(position), requestManager)
+        if (position == mediaObjects.size - 1) {
+            onScrollToBottomListener()
+        }
     }
 
     override fun getItemCount(): Int = mediaObjects.size

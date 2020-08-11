@@ -1,18 +1,16 @@
 package ru.tjournal.data
 
-import kotlinx.coroutines.Deferred
 import retrofit2.Response
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Path
+import retrofit2.http.*
 
 interface Api {
 
     @GET("subsite/{id}/timeline/{sorting}")
     suspend fun getFeeds(
         @Path("id") id: Int,
-        @Path("sorting") sorting: String
+        @Path("sorting") sorting: String,
+        @Query("count") count: Int,
+        @Query("offset") offset: Int
     ): Response<FeedsResponse>
 
     @POST("auth/qr")
