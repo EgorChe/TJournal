@@ -1,5 +1,6 @@
 package ru.tjournal.data
 
+import okhttp3.RequestBody
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -13,7 +14,8 @@ interface Api {
         @Query("offset") offset: Int
     ): Response<FeedsResponse>
 
+    @Multipart
     @POST("auth/qr")
-    suspend fun authQR(@Body request: AuthQrRequest): Response<Unit>
+    suspend fun authQR(@Part("token") token: RequestBody): Response<AuthResponse>
 
 }

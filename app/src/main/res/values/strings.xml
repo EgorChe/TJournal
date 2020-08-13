@@ -2,4 +2,9 @@
     <string name="app_name">TJournal</string>
     <string name="title_feed">Лента</string>
     <string name="title_profile">Профиль</string>
+    <string name="authorization">Авторизоваться</string>
+    <string name="scan">Сканировать</string>
+    <string name="logout">Выйти</string>
+    <string name="ok">Ок</string>
+    <string name="permission_not_granted">Пользователь не дал разрешения</string>
 </resources>

@@ -2,11 +2,6 @@ package ru.tjournal.data
 
 import com.google.gson.annotations.SerializedName
 
-data class AuthQrRequest(
-    @SerializedName("token")
-    val token: String
-)
-
 data class FeedsResponse(
 
     @SerializedName("message")
@@ -31,4 +26,22 @@ data class Cover(
 
     @SerializedName("thumbnailUrl")
     val thumbnail: String = ""
+)
+
+data class AuthResponse(
+
+    @SerializedName("message")
+    val message: String,
+
+    @SerializedName("result")
+    val result: UserInfo
+)
+
+data class UserInfo(
+
+    @SerializedName("name")
+    val name: String = "",
+
+    @SerializedName("avatar_url")
+    val avatarUrl: String = ""
 )

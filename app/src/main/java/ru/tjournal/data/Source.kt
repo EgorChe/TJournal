@@ -1,5 +1,7 @@
 package ru.tjournal.data
 
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.RequestBody.Companion.toRequestBody
 import retrofit2.Response
 
 class Source(private val api: Api) {
@@ -20,8 +22,8 @@ class Source(private val api: Api) {
         return api.getFeeds(id, sorting, count, offset)
     }
 
-    suspend fun auth(token: String): Response<Unit> {
-        val request = AuthQrRequest(token)
-        return api.authQR(request)
+    suspend fun auth(token: String): Response<AuthResponse> {
+        val body = token.toRequestBody("text/plain".toMediaTypeOrNull())
+        return api.authQR(body)
     }
 }

@@ -1,12 +1,12 @@
 package ru.tjournal
 
-import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import androidx.preference.PreferenceManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -14,6 +14,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.tjournal.BuildConfig.TJ_URL
 import ru.tjournal.data.Api
+import ru.tjournal.data.SavedData
 import ru.tjournal.data.Source
 import java.security.SecureRandom
 import java.security.cert.X509Certificate
@@ -23,13 +24,8 @@ import javax.net.ssl.X509TrustManager
 
 class MainActivity : AppCompatActivity() {
 
-    companion object {
-        private const val APP_NAME = "tjournal"
-        private const val APP_VERSION = "1.1"
-        private const val ANDROID = "Android"
-    }
-
     lateinit var service: Source
+    lateinit var savedData: SavedData
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,6 +33,7 @@ class MainActivity : AppCompatActivity() {
 
         setNavigation()
         createRetrofit()
+        createSavedData()
     }
 
     private fun setNavigation() {
@@ -50,20 +47,7 @@ class MainActivity : AppCompatActivity() {
         navView.setupWithNavController(navController)
     }
 
-    //dtf-app/2.2.0 (Pixel 2; Android/9; ru; )
     private fun createRetrofit() {
-        val httpClient = OkHttpClient.Builder()
-
-        httpClient.addInterceptor { chain ->
-            val request = chain.request().newBuilder()
-                .addHeader(
-                    "User-agent",
-                    "$APP_NAME-app/$APP_VERSION (${Build.DEVICE}; $ANDROID/${Build.VERSION.RELEASE}; ${getLocale()}; 1980x1794"
-                ).build()
-            chain.proceed(request)
-        }
-
-//        val client = httpClient.build()
         val retrofit = Retrofit.Builder()
             .baseUrl(TJ_URL)
             .addConverterFactory(GsonConverterFactory.create())
@@ -94,11 +78,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun getLocale(): String =
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            this.resources.configuration.locales.get(0).language
-        } else {
-            //noinspection deprecation
-            resources.configuration.locale.language
-        }
+    private fun createSavedData() {
+        savedData = SavedData(PreferenceManager.getDefaultSharedPreferences(this))
+    }
 }
