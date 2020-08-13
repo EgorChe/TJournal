@@ -21,6 +21,7 @@ data class Feed(
 )
 
 data class Cover(
+
     @SerializedName("url")
     val url: String?,
 

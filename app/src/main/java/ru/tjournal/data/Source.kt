@@ -9,7 +9,7 @@ class Source(private val api: Api) {
     companion object {
         private const val ID_VIDEO_AND_GIF = 237832
         private const val NEW = "new"
-        private const val COUNT = 10
+        private const val COUNT = 20
         const val OFFSET = 1
     }
 

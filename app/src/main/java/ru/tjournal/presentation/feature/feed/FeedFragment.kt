@@ -10,7 +10,6 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
-import com.bumptech.glide.request.RequestOptions
 import ru.tjournal.MainActivity
 import ru.tjournal.data.Source
 import ru.tjournal.databinding.FragmentFeedBinding
@@ -46,7 +45,6 @@ class FeedFragment : Fragment() {
         binding.rvFeeds.apply {
             layoutManager = LinearLayoutManager(requireContext())
             addItemDecoration(VerticalSpacingItemDecorator(10))
-//            setMediaObjects()
             videoAdapter =
                 VideoPlayerRecyclerAdapter(
                     linkedSetOf(),
@@ -62,11 +60,7 @@ class FeedFragment : Fragment() {
     }
 
     private fun initGlide(): RequestManager {
-        val options: RequestOptions = RequestOptions()
-//            .placeholder(R.drawable.white_background)
-//            .error(R.drawable.white_background)
         return Glide.with(this)
-            .setDefaultRequestOptions(options)
     }
 
     private fun fetchData() {
